@@ -1179,6 +1179,24 @@
         // Oppdater høyde ved resize
         window.addEventListener('resize', updateIframeHeight);
 
+        // Send height to parent window
+function updateParentHeight() {
+  const height = document.body.scrollHeight;
+  window.parent.postMessage({ height: height }, '*');
+}
+
+// Update on page load
+window.addEventListener('load', updateParentHeight);
+
+// Update when results are shown
+document.addEventListener('DOMContentLoaded', function() {
+  const beregn = document.getElementById('beregn');
+  if (beregn) {
+    beregn.addEventListener('click', function() {
+      setTimeout(updateParentHeight, 100);
+    });
+  }
+});
     </script>
 </body>
 </html>
